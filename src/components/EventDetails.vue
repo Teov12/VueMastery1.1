@@ -18,6 +18,7 @@ onMounted(async () => {
     await  getEventById(props.id).then((response) => {
         console.log(response)
         event.value = response.data
+        console.log(event.value);
     }).catch((error) => {
         console.log(error)
     })

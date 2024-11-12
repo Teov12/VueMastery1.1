@@ -10,10 +10,10 @@ const props = defineProps(['showExtra'])
 
 onMounted(() => {
   getEvents().then((response: any) => {
+    console.log(response.data.events);
     events.value = response.data.events;
-    console.log(props.showExtra);
   });
-})
+});
 </script>
 
 <template>
