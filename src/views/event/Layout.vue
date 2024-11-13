@@ -1,5 +1,5 @@
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { getEventById } from '../../services/EventServices.d';
 
@@ -13,6 +13,7 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const router = useRouter();
 
 onMounted(async () => {
     await getEventById(props.id).then((response) => {
@@ -21,6 +22,16 @@ onMounted(async () => {
         console.log(event.value);
     }).catch((error) => {
         console.log(error)
+        if (error.response && error.response.status === 404) {
+            router.push({
+                name: '404Resource',
+                params: {
+                    resource: 'evento'
+                }
+            })
+        }else {
+            router.push({ name: 'netWorkError' })
+        }
     })
 })
 </script>
@@ -32,7 +43,7 @@ onMounted(async () => {
             |
             <RouterLink :to="{ name: 'eventRegister' }">Register</RouterLink>
             |
-            <RouterLink :to="{ name: 'eventEdit'}">Edit</RouterLink>
+            <RouterLink :to="{ name: 'eventEdit' }">Edit</RouterLink>
         </nav>
         <RouterView :event="event" />
     </div>
